@@ -1,7 +1,8 @@
-macroScript VertexColorMeshView
+macroScript VertexColorMeshView
+
 category:"_AniSeoHyun"
 tooltip:"버텍스칼라 모델뷰"
-icon:#("", 3)
+icon:#("",0)
 (
 -- 오브젝트에 사용된 버텍스 칼라 색갈별로 리스트 생성
 -- 해당 리스트를 클릭하면 해당 버택스 선택
