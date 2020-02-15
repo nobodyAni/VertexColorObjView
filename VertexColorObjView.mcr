@@ -59,8 +59,8 @@ rollout VertexColorView_rollout "모델 등급 보기" width:250 height:80
         )
     )
 
-    button ui_lowMeshOn "저렙용"
-    button ui_highMeshOn "고렙용"
+    button ui_lowMeshOn "하이드"
+    button ui_highMeshOn "언하이드"
     on ui_lowMeshOn pressed do (
         CheckIsNodeArray_fn target_nodeArray:m_skin_nodeArray
         sel_nodeArray = (selection as array)
