@@ -1,6 +1,12 @@
+macroScript VertexColorMeshView
+category:"_AniSeoHyun"
+tooltip:"버텍스칼라 모델뷰"
+icon:#("", 3)
+(
 -- 오브젝트에 사용된 버텍스 칼라 색갈별로 리스트 생성
 -- 해당 리스트를 클릭하면 해당 버택스 선택
 -- 버택스를 페이스로 변환후 하이드/언하이드
+
 rollout VertexColorView_rollout "모델 등급 보기" width:250 height:80
 (
     -- 변수
@@ -88,3 +94,4 @@ if VertexColorView_rollout != undefined do (
     DestroyDialog  VertexColorView_rollout
 )
 createDialog VertexColorView_rollout  style:#(#style_toolwindow, #style_sysmenu, #style_resizing)
+)
