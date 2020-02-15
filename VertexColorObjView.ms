@@ -44,8 +44,8 @@ rollout VertexColorView_rollout "모델 등급 보기" width:250 height:150
             modPanel.setCurrentObject obj_node.baseObject
             if (isKindOf obj_node Editable_mesh) do (
                 obj_mesh = obj_node
-                int_Array = GetVertexByColor_intArray obj_mesh:obj_mesh target_color:m_targetHide_color
-                SetHideFace_bool obj_mesh:obj_mesh vert_intArray:int_Array
+                verts_BitArray = meshop.getVertsByColor obj_mesh m_targetHide_color 0 0 0
+                SetHideFace_bool obj_mesh:obj_mesh vert_intArray:verts_BitArray
                 update obj_mesh
             )
             if (isKindOf obj_node Editable_Poly) do (
