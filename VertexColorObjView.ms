@@ -2,8 +2,8 @@
 -- 오브젝트에 사용된 버텍스 칼라 색갈별로 리스트 생성
 -- 해당 리스트를 클릭하면 해당 버택스 선택
 -- 버택스를 페이스로 변환후 하이드/언하이드
-VertexColorView_rolloutFloater = undefined
-rollout VertexColorView_rollout "버텍스칼라뷰어"
+
+rollout VertexColorView_rollout "모델 등급 보기" width:250 height:150
 (
     -- 변수
     local m_colorList_colorArray = #()
@@ -60,10 +60,16 @@ rollout VertexColorView_rollout "버텍스칼라뷰어"
     button ui_lowMeshOn "저렙용"
     button ui_highMeshOn "고렙용"
     on ui_lowMeshOn pressed do (
+        sel_nodeArray = (selection as array)
+        clearSelection()
         RunLowMesh_fn target_nodeArray:m_skin_nodeArray
         redrawViews() 
+        clearSelection()
+        select sel_nodeArray
     )
     on ui_highMeshOn pressed do (
+        sel_nodeArray = (selection as array)
+        clearSelection()
         for obj_node in m_skin_nodeArray do (
             modPanel.setCurrentObject obj_node.baseObject
             if (isKindOf obj_node Editable_mesh) do (
@@ -73,7 +79,9 @@ rollout VertexColorView_rollout "버텍스칼라뷰어"
                 polyop.unHideAllFaces obj_node 
             )
         )
-        redrawViews() 
+        redrawViews()
+        clearSelection()
+        select sel_nodeArray
     )
     on VertexColorView_rollout open do (
         m_skin_nodeArray = #()
@@ -84,8 +92,8 @@ rollout VertexColorView_rollout "버텍스칼라뷰어"
         )
     )
 )
-if VertexColorView_rolloutFloater != undefined do (
-
+if VertexColorView_rollout != undefined do (
+    DestroyDialog  VertexColorView_rollout
 )
-VertexColorView_rolloutFloater = newRolloutFloater "모델 등급 보기" 256 500
-addRollout  VertexColorView_rollout VertexColorView_rolloutFloater
+createDialog VertexColorView_rollout  style:#(#style_toolwindow, #style_sysmenu, #style_resizing)
+--addRollout  VertexColorView_rollout VertexColorView_rolloutFloater
