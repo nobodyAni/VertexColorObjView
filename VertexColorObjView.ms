@@ -8,6 +8,7 @@ rollout VertexColorView_rollout "버텍스칼라뷰어"
     -- 변수
     local m_colorList_colorArray = #()
     local m_targetHide_color = color 255 0 0  --숨김처리하는 버텍스칼라
+    local m_skin_nodeArray = #()
 
     -- 함수
     fn GetVertexColor_ColorArray obj_mesh:undefined =  (
@@ -59,20 +60,28 @@ rollout VertexColorView_rollout "버텍스칼라뷰어"
     button ui_lowMeshOn "저렙용"
     button ui_highMeshOn "고렙용"
     on ui_lowMeshOn pressed do (
-        RunLowMesh_fn()
+        RunLowMesh_fn target_nodeArray:m_skin_nodeArray
         redrawViews() 
     )
     on ui_highMeshOn pressed do (
-        for obj_node in (objects as array) do (
+        for obj_node in m_skin_nodeArray do (
             modPanel.setCurrentObject obj_node.baseObject
             if (isKindOf obj_node Editable_mesh) do (
-                SetHideFace_bool obj_mesh:obj_node.mesh
+                SetHideFace_bool obj_mesh:obj_node
             )
             if (isKindOf obj_node Editable_Poly) do (
                 polyop.unHideAllFaces obj_node 
             )
         )
         redrawViews() 
+    )
+    on VertexColorView_rollout open do (
+        m_skin_nodeArray = #()
+        for obj_node in (objects as array) do (
+            if obj_node.modifiers[#Skin] != undefined do (
+                append m_skin_nodeArray obj_node
+            )
+        )
     )
 )
 if VertexColorView_rolloutFloater != undefined do (
