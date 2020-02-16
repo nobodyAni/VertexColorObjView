@@ -12,7 +12,7 @@ rollout VertexColorView_rollout "모델 등급 보기" width:250 height:80
 (
     -- 변수
     local m_targetHide_color = color 255 0 0  --숨김처리하는 버텍스칼라
-    local m_skin_nodeArray = #()
+    local m_target_nodeArray = #()
 
     -- 함수
     fn SetHideFace_bool obj_node:undefined vert_intArray:#() = (
@@ -21,11 +21,11 @@ rollout VertexColorView_rollout "모델 등급 보기" width:250 height:80
         update obj_node
         true
     )
-    fn UpdateSkinMeshArray_fn = (
-        m_skin_nodeArray = #()
-        for obj_node in (objects as array) do (
-            if obj_node.modifiers[#Skin] != undefined do (
-                append m_skin_nodeArray obj_node
+    fn UpdateHideMeshArray_fn = (
+        m_target_nodeArray = #()
+        for obj_node in (selection as array) do (
+            if (isKindOf obj_node Editable_mesh) or (isKindOf obj_node Editable_Poly) do (
+                append m_target_nodeArray obj_node
             )
         )
     )
@@ -37,7 +37,7 @@ rollout VertexColorView_rollout "모델 등급 보기" width:250 height:80
             )
         )
         if isfalseNode_bool do (
-            UpdateSkinMeshArray_fn()
+            UpdateHideMeshArray_fn()
         )
     )
     fn RunLowMesh_fn target_nodeArray:(objects as array) = (
@@ -58,23 +58,31 @@ rollout VertexColorView_rollout "모델 등급 보기" width:250 height:80
             )
         )
     )
+    colorpicker ui_hideColor "숨김처리할 색:" color:[255,0,0] modal:true
+    button ui_selectMesh "적용 할 것 선택"
+    button ui_hideMeshOn "하이드" across:2
+    button ui_hideMeshOff "언하이드"
 
-    button ui_lowMeshOn "하이드"
-    button ui_highMeshOn "언하이드"
-    on ui_lowMeshOn pressed do (
-        CheckIsNodeArray_fn target_nodeArray:m_skin_nodeArray
+    on ui_hideColor changed pick_color do (
+        m_targetHide_color = pick_color
+    )
+    on ui_selectMesh pressed do (
+        UpdateHideMeshArray_fn()
+    )
+    on ui_hideMeshOn pressed do (
+        CheckIsNodeArray_fn target_nodeArray:m_target_nodeArray
         sel_nodeArray = (selection as array)
         clearSelection()
-        RunLowMesh_fn target_nodeArray:m_skin_nodeArray
+        RunLowMesh_fn target_nodeArray:m_target_nodeArray
         redrawViews() 
         clearSelection()
         select sel_nodeArray
     )
-    on ui_highMeshOn pressed do (
-        CheckIsNodeArray_fn target_nodeArray:m_skin_nodeArray
+    on ui_hideMeshOff pressed do (
+        CheckIsNodeArray_fn target_nodeArray:m_target_nodeArray
         sel_nodeArray = (selection as array)
         clearSelection()
-        for obj_node in m_skin_nodeArray do (
+        for obj_node in m_target_nodeArray do (
             modPanel.setCurrentObject obj_node.baseObject
             if (isKindOf obj_node Editable_mesh) do (
                 SetHideFace_bool obj_node:obj_node
@@ -88,7 +96,7 @@ rollout VertexColorView_rollout "모델 등급 보기" width:250 height:80
         select sel_nodeArray
     )
     on VertexColorView_rollout open do (
-        UpdateSkinMeshArray_fn()
+        UpdateHideMeshArray_fn()
     )
 )
 if VertexColorView_rollout != undefined do (
