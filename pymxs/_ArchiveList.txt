@@ -1,0 +1,3 @@
+mzp.run
+PyVertexColorObjView.mcr
+PyVertexColorObjView.py

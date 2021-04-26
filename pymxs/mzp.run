@@ -1,0 +1,8 @@
+name "PyVertexColorViewTool"
+version 1.00
+
+copy PyVertexColorObjView.py to $userScripts\SEO\VertexColorObjView
+drop "PyVertexColorObjView.mcr"
+run "PyVertexColorObjView.mcr"
+
+clear temp on reset 
